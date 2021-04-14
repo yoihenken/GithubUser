@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Github User</string>
+    <string name="search">Cari</string>
+    <string name="language">Bahasa</string>
+    <string name="search_hint">Nama Pengguna</string>
+    <string name="no_data">Tidak ada Data</string>
+    <string name="hello_blank_fragment">Hai, ini Fragment Kosong</string>
+    <string name="company">Perusahaan</string>
+    <string name="location">Lokasi</string>
+    <string name="repository">Repositori\t:</string>
+    <string name="followers">Pengikut</string>
+    <string name="following">Mengikuti</string>
+</resources>
