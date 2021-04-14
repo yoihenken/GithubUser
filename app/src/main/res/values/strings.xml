@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">Github User</string>
+    <string name="search">Search</string>
+    <string name="language">Language</string>
+    <string name="search_hint">Username</string>
+    <string name="no_data">No Data</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="company">Company</string>
+    <string name="location">Location</string>
+    <string name="repository">Repository\t:</string>
 
     <string-array name="username">
         <item>JakeWharton</item>
