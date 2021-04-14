@@ -65,7 +65,7 @@ class DashboardActivity : AppCompatActivity() {
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
                     model.getSearchUser(query.trim())
-                    this@DashboardActivity.hideKeyboard(this@apply)
+                    this@DashboardActivity.hideKeyboard(this@apply) //hide keyboard
                     return true
                 }
                 override fun onQueryTextChange(newText: String): Boolean {
