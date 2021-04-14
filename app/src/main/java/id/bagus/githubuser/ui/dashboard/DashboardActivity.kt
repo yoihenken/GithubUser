@@ -1,40 +1,86 @@
 package id.bagus.githubuser.ui.dashboard
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
+import android.view.Menu
+import android.view.View
+import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import id.bagus.githubuser.R
 import id.bagus.githubuser.databinding.ActivityDashboardBinding
-import id.bagus.githubuser.model.User
-import id.bagus.githubuser.ui.detail.DetailActivity
-import id.bagus.githubuser.ui.detail.DetailActivity.Companion.EXTRA_DATA
+import id.bagus.githubuser.model.UserResponse
+import id.bagus.githubuser.utils.Helpers.hideKeyboard
 
 class DashboardActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDashboardBinding
-    private lateinit var adapter : UserAdapter
-    private var dataUser = arrayListOf<User>()
+    private val model : DashboardViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.appBar)
 
-        //get intent
-        dataUser = intent.getParcelableArrayListExtra<User>(EXTRA_USER) as ArrayList<User>
-        binding.apply {
-            //set adapter
-            adapter = UserAdapter(this@DashboardActivity)
-            lvUser.adapter = adapter
-            //when item clicked
-            lvUser.setOnItemClickListener { _, _, i, _ ->
-                startActivity(Intent(this@DashboardActivity, DetailActivity::class.java).apply {
-                    putExtra(EXTRA_DATA, dataUser[i])
-                })
+        model.user.observe(this, {
+            if(it.isEmpty()){
+                binding.noData.visibility = View.VISIBLE
+            }else{
+                binding.noData.visibility = View.GONE
             }
-        }
-        adapter.userData = dataUser //send data to adapter
+            recycleData(it)
+        })
+
     }
-    companion object{
-        var EXTRA_USER = "extra_user"
+
+    private fun recycleData(data: List<UserResponse>){
+        binding.lvUser.apply{
+            Log.d("Activity", "this is $data")
+            layoutManager = LinearLayoutManager(this@DashboardActivity)
+            setHasFixedSize(true)
+            itemAnimator = DefaultItemAnimator()
+            adapter = DashboardAdapter(data, this@DashboardActivity)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.option_menu, menu)
+
+        // Search View
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView = menu?.findItem(R.id.search)?.actionView as SearchView
+
+        searchView.apply {
+            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+            queryHint = resources.getString(R.string.search_hint)
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    model.getSearchUser(query.trim())
+                    this@DashboardActivity.hideKeyboard(this@apply)
+                    return true
+                }
+                override fun onQueryTextChange(newText: String): Boolean {
+                    model.getSearchUser(newText)
+                    return false
+                }
+            })
+        }
+
+        //Localization
+        val langButtion = menu.findItem(R.id.language)
+        langButtion.setOnMenuItemClickListener {
+            startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
+            return@setOnMenuItemClickListener true
+        }
+        return true
     }
 }
