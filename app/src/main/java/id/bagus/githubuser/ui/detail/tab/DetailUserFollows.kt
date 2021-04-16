@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.faltenreich.skeletonlayout.Skeleton
+import com.faltenreich.skeletonlayout.applySkeleton
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItem
 import id.bagus.githubuser.R
 import id.bagus.githubuser.databinding.FragmentDetailUserFollowsBinding
@@ -32,33 +34,29 @@ class DetailUserFollows : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentDetailUserFollowsBinding.inflate(inflater)
-        val index = FragmentPagerItem.getPosition(arguments)
-        Log.d("DetailUF", "index: $index")
-
-        showFragments(index)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val index = FragmentPagerItem.getPosition(arguments)
+        showFragments(index)
     }
 
     private fun showFragments(index: Int) {
         when(index){
             0 -> {
-                model.getUserFollower(username)
-                model.follower.observe(viewLifecycleOwner){
-                    Log.d("DetailUF", "follower: $it")
-                    recycleData(it)
+                model.apply {
+                    getUserFollower(username)
+                    follower.observe(viewLifecycleOwner){
+                        recycleData(it)
+                    }
                 }
-
             }
             1 -> {
                 model.apply {
                     getUserFollowing(username)
                     following.observe(viewLifecycleOwner){
-                        Log.d("DetailUF", "following: $it")
                         recycleData(it)
                     }
                 }
