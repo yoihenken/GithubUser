@@ -1,4 +1,4 @@
-package id.bagus.githubuser.repo
+package id.bagus.githubuser.repo.network
 
 import id.bagus.githubuser.BuildConfig
 import id.bagus.githubuser.model.SearchResponse

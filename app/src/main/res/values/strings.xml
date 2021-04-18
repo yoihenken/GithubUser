@@ -10,6 +10,14 @@
     <string name="company">Company</string>
     <string name="location">Location</string>
     <string name="repository">Repository\t:</string>
+    <string name="favorite">Favorite</string>
+    <string name="saved">saved</string>
+    <string name="unsaved">unsaved</string>
+    <string name="reminder">Reminder</string>
+    <string name="text_language">English</string>
+    <string name="set_reminder">Set Reminder</string>
+    <string name="unset_reminder">Remove Reminder</string>
+    <string name="reminder_msg">Time to see your friends Repository !</string>
 
     <string-array name="username">
         <item>JakeWharton</item>

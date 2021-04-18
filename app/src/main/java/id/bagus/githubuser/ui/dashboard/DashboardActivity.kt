@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -19,6 +20,8 @@ import com.faltenreich.skeletonlayout.applySkeleton
 import id.bagus.githubuser.R
 import id.bagus.githubuser.databinding.ActivityDashboardBinding
 import id.bagus.githubuser.model.UserResponse
+import id.bagus.githubuser.ui.favorite.FavoriteActivity
+import id.bagus.githubuser.ui.settings.SettingsActivity
 import id.bagus.githubuser.utils.Helpers.hideKeyboard
 
 class DashboardActivity : AppCompatActivity() {
@@ -88,13 +91,19 @@ class DashboardActivity : AppCompatActivity() {
                 }
             })
         }
-
-        //Localization
-        val langButtion = menu.findItem(R.id.language)
-        langButtion.setOnMenuItemClickListener {
-            startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
-            return@setOnMenuItemClickListener true
-        }
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.favorite -> {
+                startActivity(Intent(this, FavoriteActivity::class.java))
+            }
+            R.id.settings -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }

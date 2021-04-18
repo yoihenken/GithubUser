@@ -11,4 +11,12 @@
     <string name="repository">Repositori\t:</string>
     <string name="followers">Pengikut</string>
     <string name="following">Mengikuti</string>
+    <string name="favorite">Favorit</string>
+    <string name="saved">tersimpan</string>
+    <string name="unsaved">tidak disimpan</string>
+    <string name="reminder">Pengingat</string>
+    <string name="text_language">Indonesia</string>
+    <string name="set_reminder">Aktifkan Pengingat</string>
+    <string name="unset_reminder">Hapus Pengingat</string>
+    <string name="reminder_msg">Sudah waktunya melihat Repositori temanmu !</string>
 </resources>

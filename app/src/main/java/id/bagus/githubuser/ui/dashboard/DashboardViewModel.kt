@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import id.bagus.githubuser.model.UserResponse
-import id.bagus.githubuser.repo.UserServices
+import id.bagus.githubuser.repo.network.UserServices
 import kotlinx.coroutines.launch
 
 class DashboardViewModel : ViewModel() {

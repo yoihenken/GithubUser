@@ -1,4 +1,4 @@
-package id.bagus.githubuser.repo
+package id.bagus.githubuser.repo.network
 
 import android.util.Log
 import id.bagus.githubuser.model.SearchResponse

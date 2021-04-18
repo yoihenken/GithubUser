@@ -4,19 +4,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.faltenreich.skeletonlayout.Skeleton
-import com.faltenreich.skeletonlayout.applySkeleton
 import com.faltenreich.skeletonlayout.createSkeleton
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems
 import id.bagus.githubuser.R
 import id.bagus.githubuser.databinding.ActivityDetailBinding
+import id.bagus.githubuser.model.FavoriteDataSave
 import id.bagus.githubuser.model.UserResponse
 import id.bagus.githubuser.ui.detail.tab.DetailUserFollows
+import id.bagus.githubuser.ui.favorite.FavoriteViewModel
 
 class DetailActivity : AppCompatActivity() {
 
@@ -25,6 +27,7 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var skeleton: Skeleton
     private lateinit var skeletonVP: Skeleton
     private val model : DetailViewModel by viewModels()
+    private val modelFav : FavoriteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +39,8 @@ class DetailActivity : AppCompatActivity() {
         username = intent.getStringExtra(EXTRA_USER).toString()
         //Start skeleton
         skeleton.showSkeleton()
+        //get All Favorite
+        modelFav.getSavedData()
         //Data Detail
         model.apply {
             DetailUserFollows.username = username //send username to Tab Follows
@@ -88,6 +93,34 @@ class DetailActivity : AppCompatActivity() {
 
             tvRepository.text = "${getString(R.string.repository)} ${user.publicRepos}"
             skeleton.showOriginal()
+
+            btnFavorite.apply {
+                var currentFav : FavoriteDataSave? = null
+                modelFav.saved?.observe(this@DetailActivity, {
+                    currentFav = it?.find {find -> find.login == username }
+
+                    if (currentFav != null)btnFavorite.load(R.drawable.ic_baseline_favorite_24)
+                    else btnFavorite.load(R.drawable.ic_baseline_favorite_border_24)
+                })
+
+                setOnClickListener {
+                    if(currentFav == null){
+                        modelFav.saveDataLocal(
+                            FavoriteDataSave(
+                                login = username,
+                                avatarUrl = user.avatarUrl
+                            ))
+
+                        Toast.makeText(this@DetailActivity, "$username ${getString(R.string.saved)}", Toast.LENGTH_SHORT)
+                            .show()
+                    }else if(currentFav != null){
+                        currentFav?.let { curFav ->  modelFav.removeDataLocal(curFav)}
+
+                        Toast.makeText(this@DetailActivity, "$username ${getString(R.string.unsaved)}", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
         }
     }
 

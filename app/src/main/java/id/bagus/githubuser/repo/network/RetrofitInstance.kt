@@ -1,4 +1,4 @@
-package id.bagus.githubuser.repo
+package id.bagus.githubuser.repo.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
